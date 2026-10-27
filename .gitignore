@@ -1,1 +1,3 @@
 /target
+/hadoop/*
+!/hadoop/.gitkeep

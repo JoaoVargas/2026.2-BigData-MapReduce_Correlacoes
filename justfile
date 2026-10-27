@@ -15,14 +15,14 @@ debug-local: build
 
 # Sends complete input file to HDFS
 hdfs-upload:
-    JAVA_HOME={{java_home}} hdfs dfs -mkdir -p {{hadoop_root}}/input
-    JAVA_HOME={{java_home}} hdfs dfs -put -f data/input.csv {{hadoop_root}}/input/input.csv
+    JAVA_HOME={{java_home}} hdfs dfs -mkdir -p "{{hadoop_root}}/input"
+    JAVA_HOME={{java_home}} hdfs dfs -put -f data/input.csv "{{hadoop_root}}/input/input.csv"
 
 # Runs mandatory Hadoop Streaming pipeline; replaces only prior job output
 run: hdfs-upload build
-    JAVA_HOME={{java_home}} hdfs dfs -rm -r -f {{hadoop_root}}/output
-    JAVA_HOME={{java_home}} hadoop jar {{streaming_jar}} -files target/release/mapper,target/release/combiner,target/release/reducer -input {{hadoop_root}}/input -output {{hadoop_root}}/output -mapper mapper -combiner combiner -reducer reducer
+    JAVA_HOME={{java_home}} hdfs dfs -rm -r -f "{{hadoop_root}}/output"
+    JAVA_HOME={{java_home}} hadoop jar "{{streaming_jar}}" -files target/release/mapper,target/release/combiner,target/release/reducer -input "{{hadoop_root}}/input" -output "{{hadoop_root}}/output" -mapper mapper -combiner combiner -reducer reducer
 
 # Shows Hadoop job output after job creates output directory
 hdfs-output:
-    JAVA_HOME={{java_home}} hdfs dfs -cat {{hadoop_root}}/output/part-*
+    JAVA_HOME={{java_home}} hdfs dfs -cat "{{hadoop_root}}/output/part-*"
